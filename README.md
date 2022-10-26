@@ -77,6 +77,7 @@ $ python3 etl.py
 ```
 
 ## Database Overview
+![img0](images/sparkifydb_erd.png)
 ### Fact Table(s)
 ```
 sparkifydb.songplays

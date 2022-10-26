@@ -15,11 +15,11 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 songplay_table_create = ("""
 CREATE TABLE IF NOT EXISTS songplays
 (songplay_id SERIAL PRIMARY KEY,
-start_time timestamp NOT NULL,
-user_id int NOT NULL,
+start_time timestamp NOT NULL REFERENCES time(start_time),
+user_id int NOT NULL REFERENCES users(user_id),
 level varchar NOT NULL,
-song_id VARCHAR,
-artist_id VARCHAR,
+song_id VARCHAR REFERENCES songs(song_id),
+artist_id VARCHAR REFERENCES artists(artist_id),
 session_id int NOT NULL,
 location varchar NOT NULL,
 user_agent varchar NOT NULL);
@@ -75,8 +75,8 @@ DO NOTHING;
 user_table_insert = ("""
 INSERT INTO users (user_id, first_name, last_name, gender, level)
 VALUES (%s, %s, %s, %s, %s)
-ON CONFLICT (user_id)
-DO NOTHING;
+ON CONFLICT(user_id) 
+DO UPDATE SET level = excluded.level;
 """)
 
 song_table_insert = ("""
@@ -112,8 +112,9 @@ and songs.duration = %s
 """)
 
 # QUERY LISTS
-create_table_queries = [songplay_table_create, user_table_create,
-                        song_table_create, artist_table_create,
-                        time_table_create]
-drop_table_queries = [songplay_table_drop, user_table_drop,
-                      song_table_drop, artist_table_drop, time_table_drop]
+create_table_queries = [user_table_create, song_table_create,
+                        artist_table_create, time_table_create,
+                        songplay_table_create]
+drop_table_queries = [user_table_drop, song_table_drop,
+                      artist_table_drop, time_table_drop,
+                      songplay_table_drop]
