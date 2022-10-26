@@ -35,6 +35,37 @@ Testing scripts (no need to run),
 - `test.ipynb` jupyter notebook that displays the first few rows of each table to let one check the database (sanity check).
 - `analytics.ipynb` jupyter notebook with dashboards for analytics
 
+## Set-up
+### 1. Virtual Environment
+Set up a virtual environment
+```
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+```
+Install dependencies available in this repo
+```
+$ pip install -r requirements.txt
+```
+### 2. Install postgresql with brew
+Additionally, the project uses postgresql, use the following commands to set it up
+1. Update brew ```brew update```
+2. Install postgresql ```brew install postgresql```
+3. Upgrade database```brew postgresql-upgrade-database```
+
+### 3. Set up database
+Finally, create the appropriate roles in postgresql
+1. Connect to postgres  
+```bash
+$ psql postgres
+```
+2. Create appropriate roles in postgres 
+```buildoutcfg
+postgres=# CREATE ROLE student WITH LOGIN PASSWORD 'student';
+postgres=# CREATE DATABASE studentdb;
+postgres=# GRANT ALL PRIVILEGES ON DATABASE studentdb TO student;
+postgres=# ALTER USER student CREATEDB;
+```
+
 ## Execution
 One can use the command line to first create the schema and tables, by executing
 ```bash
